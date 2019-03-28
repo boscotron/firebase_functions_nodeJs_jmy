@@ -21,27 +21,98 @@ EN UNA ACCIÓN DE CONTRATO, CORTE O DE OTRA MANERA, DERIVADO DE, FUERA O EN
 CONEXIÓN CON EL SOFTWARE O EL USO U OTRAS REPARACIONES EN EL SOFTWARE.
 */
 'use strict';
+/////////////////////// CON FIREBASE
 
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 const language = require('@google-cloud/language');
 const client = new language.LanguageServiceClient();
+
+/////////////////////////////
+
+
 const express = require('express');
 const app = express();
 
 const jmy = require('comsis_jmy');
 
 const acceso = {
-  servidor:"",
-  eid:"",
-  uid:"",
-  token:""
+  servidor:"https://us-central1-encouraging-mix-111109.cloudfunctions.net/da/",
+  eid:"MARCELO_EMPRESA",
+  uid:"boscotronZXC",
+  token:"boscotronZXCTOKEN"
 };
 
  jmy.token([],acceso).then(function(e){
     console.log("token",e);  
   });
+
+
+
+  /*
+
+  jmy.guardar([{
+    tabla:"tabla_extra",
+    api:"APIKEY",
+    id:"BSK",
+    guardar:{"campo1":"Ola k hace","campo2":"hola!","campo3":" :D "}
+  }],acceso).then(function (e) {
+    for(let p of e){
+      p=p.jmy_guardar;
+      console.log("guardar",p, "[[ EL ID ES: "+p.out.cabecera.id+"]]");  
+    }
+
+    jmy.ver([{
+      tabla:"tabla_extra",
+      api:"APIKEY",
+      col:["campo3"]
+    }],acceso).then(function (e) {  
+      for(let p of e){
+        p=p.jmy_ver;
+        console.log("ver",p.ot, "[[ EL ID ES: "+p.id_f+"]]");  
+      }
+    });
+
+  });
+*/
+
+
+/*
+  jmy.nueva_empresa([{
+    eid: "MARCELO_EMPRESA",
+    estado: "2",
+    datos:{
+      "tablas":[
+        {
+          "nombre": "registro_timeline",
+          "entrada": "1",
+          "salida": "0"
+        },
+        {
+          "nombre": "tabla_extra",
+          "entrada": "1",
+          "salida": "0"
+        },
+        {
+          "nombre": "registro_de_pagos",
+          "entrada": "1",
+          "salida": "0"
+        }     
+      ]}
+  }],acceso).then(function(res){
+    console.log(
+      res[0].jmy_emp.out.datos,
+      res[0].jmy_emp.out.datos.datos.tablas
+      );  
+  });
+  
+  jmy.db([{eid:"MARCELO_EMPRESA"}],acceso).then(function (e) {
+    console.log("DB",e);
+  });
+*/
+
+
 
 
 app.post('/ver', async (req, res) => {
