@@ -36,6 +36,8 @@ const engines = require('consolidate');
 const hbs = require('hbs');
 
 const app = express();
+
+///////
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
@@ -43,6 +45,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const routes = require('./routes/index');
 const users = require('./routes/users');
+///
+
 const jmy = require('comsis_jmy');
 const jmy_connect={
   servidor:"https://comsis.mx/api/auth/v1/",
@@ -53,7 +57,11 @@ const jmy_connect={
   api:"c5594c6085437d206ab73b4c2ace3596",
   apikey:"ff9ff56d008e7fb8ef5ce5bdeab84814",
 };
+
 app.use(express.static(__dirname + '/public'));
+
+
+
 let blocks = {}; 
 let tmp = [];  
 hbs.registerHelper('extend', function(name, context) {
@@ -69,6 +77,7 @@ hbs.registerHelper('block', function(name) {
     blocks[name] = [];
     return val; 
 });
+
 hbs.registerHelper('carga', function(items=[], options) {
  // console.log('carga inicia con: ',items);
   
@@ -94,6 +103,7 @@ app.set('view engine',"hbs");
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(jmy.co);
 
 
@@ -159,6 +169,7 @@ let context = function (req,carga={css:[],js:[],meta:[]}) {
   };
    return o;
 } 
+
 app.get('/sesion/:i/:t',jmy.entrar(jmy_connect),jmy.auth());
 app.get('/instalar', jmy.sesion(jmy_connect),jmy.instalar());
 
@@ -353,6 +364,51 @@ app.get('/token', jmy.sesion(jmy_connect),async (req,res)=>{
 });
 
 
+
+
+
+app.get('/nosesion', jmy.sesion(jmy_connect), async (req, res) => {
+  const a = req.accesos;
+
+
+
+  
+
+  if(a.pm.vistaweb.permisos>2){
+
+  jmy.guardar([{
+    tabla:"plantillas_web",
+    api:"vistaweb",
+    //id:"BSK",
+    guardar:{titulo_web:"Ola k hace",descripcion_div:"hola!"}
+
+  }],a).then(function (e) {
+      context.title="prueba de guardado";
+    let out = [];
+    for(let p of e){
+      p=p.jmy_guardar;
+      
+      console.log("guardar",p, "[[ EL ID ES: "+p.out.cabecera.id+"]]");  
+    }
+
+    jmy.ver([{
+      tabla:"plantillas_web",
+      api:"vistaweb",
+    //  col:["campo3"]
+    }],a).then(function (e) {  
+      for(let p of e){
+        p=p.jmy_ver;
+        console.log("ver",p.ot, "[[ EL ID ES: "+p.id_f+"]]");  
+      }
+    });
+
+  });
+}else{
+  res.send(JSON.stringify({error:"no tienes accesos a esta sección"}));
+}
+
+
+});
 
 
 app.get('/', jmy.sesion(jmy_connect),async (req, res) => {
