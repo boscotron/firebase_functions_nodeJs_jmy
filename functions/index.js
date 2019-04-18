@@ -367,6 +367,31 @@ app.get('/token', jmy.sesion(jmy_connect),async (req,res)=>{
 
 
 
+app.get('/ola', jmy.sesion(jmy_connect), async (req, res) => {
+
+  let data=context(req);
+ data=context(req,{
+    css:[
+      {url:"//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"}
+    ],
+    js:[
+      {url:"//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"},
+      {url:data.head.cdn+"assets/js/jmy/jmy_administrador_usuarios.js"},
+    ]
+  });
+  data.head.title='Hola';
+  data.out={ola:"ola k ace"};
+
+  console.log(req);
+  
+  res.render('ola',data);
+
+});
+
+
+
+
+
 app.get('/nosesion', jmy.sesion(jmy_connect), async (req, res) => {
   const a = req.accesos;
 
