@@ -104,9 +104,9 @@ $(document).ready( function () {
                 showColumns: true,
                 pagination: true,
                 searchAlign: 'left',
-                pageSize: 8,
+                pageSize: 100,
                 clickToSelect: false,
-                pageList: [8,10,25,50,100],
+                pageList: [100,200,300],
         
                 formatShowingRows: function(pageFrom, pageTo, totalRows){
                     //do nothing here, we don't want to show the text "showing x of y from..."

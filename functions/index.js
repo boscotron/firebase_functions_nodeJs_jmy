@@ -355,6 +355,10 @@ app.post('/administrador/:c/:p', jmy.sesion(jmy_connect),async (req,res)=>{
   
 
 });
+
+
+
+
 app.get('/token', jmy.sesion(jmy_connect),async (req,res)=>{
   jmy.token([],req.accesos).then(function (r) {
     console.log('token',r);
@@ -385,6 +389,32 @@ app.get('/ola', jmy.sesion(jmy_connect), async (req, res) => {
   console.log(req);
   
   res.render('ola',data);
+
+});
+
+
+
+app.get('/lineavista', jmy.sesion(jmy_connect), async (req, res) => {
+
+  let data=context(req);
+ data=context(req,{
+    css:[
+     
+    ],
+    js:[
+     
+    ]
+  });
+  data.head.title='Vista líena de tiempo';
+  data.out={ola:"ola k ace"};
+
+  console.log('req.accesos *********',req.accesos);
+  console.log('data *********',data);
+  
+  console.log('PERMISOS ',req.accesos.pm.perfil.permisos);
+
+
+  res.render('linea_de_tiempo',data);
 
 });
 

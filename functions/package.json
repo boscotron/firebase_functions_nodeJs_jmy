@@ -4,7 +4,7 @@
   "dependencies": {
     "@google-cloud/language": "^1.1.0",
     "body-parser": "^1.18.3",
-    "comsis_jmy": "^1.0.19040802",
+    "comsis_jmy": "^1.0.19041703",
     "consolidate": "^0.15.1",
     "cook": "^0.5.2",
     "cookie-encrypter": "^1.0.1",
@@ -13,7 +13,7 @@
     "express": "^4.15.2",
     "firebase-admin": "~7.0.0",
     "firebase-functions": "^2.2.1",
-    "hbs": "^4.0.3",
+    "hbs": "^4.0.4",
     "localStorage": "^1.0.4",
     "mercadopago": "^1.0.23",
     "morgan": "^1.9.1",
