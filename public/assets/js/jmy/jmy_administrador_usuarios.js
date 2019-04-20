@@ -1,5 +1,5 @@
 $(document).ready( function () {
-    $.notify({
+   /* $.notify({
         icon: "ti-gift",
         message: "Welcome to <b>Paper Dashboard</b> - a beautiful dashboard for every web developer."
 
@@ -10,7 +10,7 @@ $(document).ready( function () {
             from: 'top',
             align: 'center'
         }
-    });
+    });*/
     const url_base=$('#url_base').val();
     function modulos_sav() {
         let g ={};
@@ -123,7 +123,9 @@ $(document).ready( function () {
                 }
             });
                 
-                
+            $(window).resize(function () {
+                $t_usuarios.bootstrapTable('resetView');
+            });
                 
                 console.log(url_base+"/administrador/usuarios/listausuarios");
                 console.log('LISTA DE USUARIOS',r);	
@@ -324,7 +326,6 @@ $(document).ready( function () {
     actualizar_usuarios();
     $(window).resize(function () {
         $table.bootstrapTable('resetView');
-        $t_usuarios.bootstrapTable('resetView');
     });
 } );
 function operateFormatterUsuarios(value, row, index) {    
