@@ -52,7 +52,7 @@ const jmy_connect={
   servidor:"https://comsis.mx/api/auth/v1/",
   path:"coworkingnestplayadelcarmen/us-central1/api/",
   localhost:true,
-  localhost_api:"http://localhost:5001/encouraging-mix-111109/us-central1/da/",
+  localhost_api:"https://us-central1-encouraging-mix-111109.cloudfunctions.net/da/",
   api_server:"e2ad454bea7d919f0fc411a8b885580c", 
   api:"c5594c6085437d206ab73b4c2ace3596",
   apikey:"ff9ff56d008e7fb8ef5ce5bdeab84814",
@@ -295,7 +295,7 @@ app.post('/administrador/:c/:p', jmy.sesion(jmy_connect),async (req,res)=>{
                     tabla:"usuarios",
                     api:"administrador",
                     id:o['body']['u'],
-                    guardar:{perfi:o['body']['g']}
+                    guardar:{perfil:o['body']['g']}
                   }],a).then(function (e) {
                     
                     console.log("Resuesta guardado de usuario ------------  <<<",e[0].jmy_guardar);
@@ -326,7 +326,9 @@ app.post('/administrador/:c/:p', jmy.sesion(jmy_connect),async (req,res)=>{
                       }],a).then(function (e){
                         let r = usu[0].jmy_usr[0][0];
                         r.datos=JSON.parse(r.datos);
+                        console.log(r);
                         r=r.datos[0].emp[a.eid].apis;
+                        
                         res.send(JSON.stringify({modulos:r,u:o['body']['u'],info:e[0].jmy_ver.ot}));
                     });
                 });

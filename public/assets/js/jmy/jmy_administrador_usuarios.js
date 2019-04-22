@@ -64,7 +64,7 @@ $(document).ready( function () {
         $.ajax({
             url: url_base+"/administrador/usuarios/listausuarios",
             type: "POST",
-            data: JSON.stringify({alog:1}),
+            data: JSON.stringify({ttpt:1}),
             contentType: "text/plain",
             dataType: 'json',
             cache: false,
@@ -171,11 +171,11 @@ $(document).ready( function () {
 
                 const i = {
                     info:r.info.info || {},
-                    perfil:r.info.perfil || {},
+                    perfil:r.perfil || {},
                 };
-                console.log(r,i);	
+                console.log(r,'-----------',i); 	
                 let datos = { 
-                    nombre_empresa:i.perfil.nombre_empresa || i.info.nombre_empresa,
+                    nombre_empresa:i.perfil.nombre_empresa || '',
                     usuario: i.info.email,
                     email: i.info.email,
                     nombre: i.perfil.nombre || i.info.nombre ,
