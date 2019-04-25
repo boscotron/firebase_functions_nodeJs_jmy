@@ -13,8 +13,7 @@
 							</div>
 							<div class="col-xs-7">
 								<div class="numbers">
-									<p class="jmy_web_div" data-page="vistaweb" id="capacidad" data-editor="no">
-										{{vistaweb.capacidad}}</p>
+									<p class="jmy_web" data-t="plantillas_web" data-a="vistaweb" data-id="titulo_capacidad"  data-idf="administrador_usuarios" data-ver="on">{{vistaweb.titulo_capacidad}}</p>
 									105 {{vistaweb.usuarios}}
 								</div>
 							</div>
@@ -40,7 +39,7 @@
 							</div>
 							<div class="col-xs-7">
 								<div class="numbers">
-									<p>Clientes</p>
+									<p class="jmy_web" data-t="plantillas_web" data-a="vistaweb" data-id="titulo_clientes"  data-idf="administrador_usuarios" data-ver="on">{{vistaweb.titulo_clientes}}</p>
 									45
 								</div>
 							</div>
@@ -61,11 +60,11 @@
 							<div class="col-xs-5">
 								<div class="icon-big icon-danger text-center">
 									<i class="fa fa-building"></i>
-								</div>
+								</div> 
 							</div>
 							<div class="col-xs-7">
 								<div class="numbers">
-									<p>empresas</p>
+									<p class="jmy_web" data-t="plantillas_web" data-a="vistaweb" data-id="titulo_empresas"  data-idf="administrador_usuarios" data-ver="on">empresas</p>
 									23
 								</div>
 							</div>
@@ -307,10 +306,10 @@
 					</div>
 					<div class="card-content">
 						<div class="author">
-							<img class="avatar border-white" src="{{head.cdn}}assets/img/faces/nuevo.jpg" alt=""/>
-							<h4 class="card-title">Agrega nuevos usuarios<br />
-								<a href="#"><small>@chetfaker</small></a>
+							<img class="avatar border-white" src="{{head.cdn}}assets/img/faces/nuevo.jpg" id="usuario_foto" alt=""/>
+							<h4 class="card-title jmy_web" data-a="administrador" data-idf="{{usuario.uid}}" data-id="perfil-nombre" data-t="usuarios">
 							</h4>
+							<small><a href="#" class="jmy_web" data-id="email"></a></small>
 						</div>
 						<p class="description text-center">
 							Solo ingresa su correo electronico <br>
@@ -324,6 +323,36 @@
 						</div>
 					</div>
 				</div>
+				<div class="card card-user" id="card_editar_perfil">
+					<div class="image">
+						<img src="{{head.cdn}}assets/img/background.jpg" alt="..."/>
+					</div>
+					<div class="card-content">
+						<div class="author">
+							<img class="avatar border-white" src="{{usuario.foto}}" alt=""/>
+							<h4 class="card-title jmy_web"  data-a="administrador" data-idf="{{usuario.uid}}" data-id="perfil-nombre" data-t="usuarios" >{{usuario.nombre}}</h4><br />
+								<small><a href="#">{{usuario.email}}</a></small>
+							
+						</div>
+						<p class="description text-center">
+							{{empresa.nombre}}<br>
+						</p>
+					</div>
+					<hr>
+					<div class="text-center">
+						<div class="row">
+							<div class="col-md-3 col-md-offset-1">
+								<h5>12<br/><small>Hrs en línea</small></h5>
+							</div>
+							<div class="col-md-4">
+								<h5>28% - 2GB <br/><small>Internet</small></h5>
+							</div>
+							<div class="col-md-3">
+								<h5>$14.99<br/><small>Cuenta</small></h5>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="card card-user" id="card_ver_perfil">
 					<div class="image">
 						<img src="{{head.cdn}}assets/img/background.jpg" alt="..."/>
@@ -331,9 +360,8 @@
 					<div class="card-content">
 						<div class="author">
 							<img class="avatar border-white" src="{{usuario.foto}}" alt=""/>
-							<h4 class="card-title">{{usuario.nombre}}<br />
-								<a href="#"><small>{{usuario.email}}</small></a>
-							</h4>
+							<h4 class="card-title jmy_web"  data-a="administrador" data-idf="{{usuario.uid}}" data-id="perfil-nombre" data-t="usuarios" data-ver="on">{{usuario.nombre}}</h4><br />
+								<small><a href="#">{{usuario.email}}</a></small>
 						</div>
 						<p class="description text-center">
 							{{empresa.nombre}}<br>

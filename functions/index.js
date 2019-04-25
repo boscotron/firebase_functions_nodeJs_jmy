@@ -186,7 +186,7 @@ app.get('/administrador/:c', jmy.sesion(jmy_connect),async (req,res)=>{
           let m = [];
           let n = []; 
           let c = 0;
-          console.log(a);
+          //console.log(a);
           
           a.api.json.modulos_niveles.forEach(ni =>{n.push({nombre:ni,c:c});c++;});
           Object.keys(a.api.json.modulos).forEach(mod => {          
@@ -204,30 +204,37 @@ app.get('/administrador/:c', jmy.sesion(jmy_connect),async (req,res)=>{
             ],
             js:[
               {url:"//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"},
-              {url:data.head.cdn+"assets/js/jmy/jmy_administrador_usuarios.js"},
+              {url:data.head.cdn+"assets/js/jmy/jmy_administrador_usuarios.js?d="+Date.now()},
             ]
           });
-            
           data.head.title="Administrador de usuarios";
           data.out={modulos:m};
           //console.log("data.out",data.out.modulos);
           
           ren='administrador_usuarios';
+          jmy.ver([{
+            tabla:"plantillas_web",
+            api:"vstaweb",
+          }],a).then(function (vw) {  
+            console.log("vistaweb",vw);
+            data.vistaweb=vw;
+            res.render(ren,data);    
+          });
+          
         break;    
         default:
           break;
       }
-      //console.log("data OUT FINAL",data);    
-      res.render(ren,data);    
     }else{
       res.render('404',data);
     }
   }catch(e){
     console.log('Error Administrador', e.message);
     res.status(500).send();
-  }
-  
+  }  
 });
+
+
 
 app.post('/administrador/:c/:p', jmy.sesion(jmy_connect),async (req,res)=>{
   res.set('Cache-Control','public, max-age=2, s-maxage=4');
@@ -244,7 +251,6 @@ app.post('/administrador/:c/:p', jmy.sesion(jmy_connect),async (req,res)=>{
       console.log('req.body',req.body);
       if(req.body!=undefined&&req.body!=''&&!Array.isArray(req.body))
         o['body']=JSON.parse(req.body);
-      
       switch (req.params.c) {
         case 'usuarios':
           let m = [];
@@ -252,13 +258,11 @@ app.post('/administrador/:c/:p', jmy.sesion(jmy_connect),async (req,res)=>{
           let c = 0;
           switch (req.params.p) {
             case 'modulos':
-              console.log('PM  ',a.pm.administrador.permisos);
               if(a.pm.administrador.permisos>3){
                 jmy.usuario([{uid:o.body.u}],a).then(function (r) {
                   let j = JSON.parse(r[0].jmy_usr[0][0].datos);
                   j[0].emp[a.eid].apis=o.body.g;
                   jmy.usuario([{uid:o.body.u,datos:j}],a).then(function (reu) {
-                    console.log("RRRRRRRRes update usuario ",reu);
                     o.mensaje=reu[0].jmy_usr[0];
                     o['respuesta']=r;
                     res.send(JSON.stringify(o));                      
@@ -285,11 +289,9 @@ app.post('/administrador/:c/:p', jmy.sesion(jmy_connect),async (req,res)=>{
               }          
             break;
             case 'guardar-perfil':      
-              if(a.pm.administrador.permisos>3){
-                
+              if(a.pm.administrador.permisos>3){                
                 if(req.body!=undefined&&req.body!=''&&!Array.isArray(req.body))
-                  o['body']=JSON.parse(req.body);
-                  
+                  o['body']=JSON.parse(req.body);                  
                 if(o['body']['u']!=''){
                   jmy.guardar([{
                     tabla:"usuarios",
@@ -297,10 +299,7 @@ app.post('/administrador/:c/:p', jmy.sesion(jmy_connect),async (req,res)=>{
                     id:o['body']['u'],
                     guardar:{perfil:o['body']['g']}
                   }],a).then(function (e) {
-                    
-                    console.log("Resuesta guardado de usuario ------------  <<<",e[0].jmy_guardar);
                     res.send( JSON.stringify(e[0].jmy_guardar) );
-                
                   });
                 }
               }else{
@@ -309,16 +308,12 @@ app.post('/administrador/:c/:p', jmy.sesion(jmy_connect),async (req,res)=>{
               }
             break;
             case 'perfil':      
-              if(a.pm.administrador.permisos>3){
-                
+              if(a.pm.administrador.permisos>3){                
                 if(req.body!=undefined&&req.body!=''&&!Array.isArray(req.body))
                 o['body']=JSON.parse(req.body);
-                console.log('PERFILLLL -------------------------------',o['body']['u']);
                 jmy.usuario([{
                   uid:o['body']['u']
                 }],a).then(function (usu) {  
-                    console.log('USSSUU -------------------------------------',usu[0].jmy_usr[0]);                    
-                    
                     jmy.ver([{
                         tabla:"usuarios",
                         api:"administrador",
@@ -326,9 +321,7 @@ app.post('/administrador/:c/:p', jmy.sesion(jmy_connect),async (req,res)=>{
                       }],a).then(function (e){
                         let r = usu[0].jmy_usr[0][0];
                         r.datos=JSON.parse(r.datos);
-                        console.log(r);
                         r=r.datos[0].emp[a.eid].apis;
-                        
                         res.send(JSON.stringify({modulos:r,u:o['body']['u'],info:e[0].jmy_ver.ot}));
                     });
                 });
@@ -338,11 +331,51 @@ app.post('/administrador/:c/:p', jmy.sesion(jmy_connect),async (req,res)=>{
               }          
             break;
             default:
-              break;    
-             
+              break;                 
           } 
         break; 
-      
+        case 'jmyWebAjG':
+          console.log('jmyWebAjG',o.body);
+          let g = [];    
+          switch (req.params.p) {
+            case 's':      
+              Object.keys(o.body).forEach(e => {
+                Object.keys(o.body[e]).forEach(eb => {
+                  Object.keys(o.body[e][eb]).forEach(ec => {
+                    g.push({
+                      tabla:eb,
+                      api:e,
+                      id:(ec!='nuevo')?ec:null,
+                      guardar:o.body[e][eb][ec]
+                    });
+                  });
+                });
+              });          
+              jmy.guardar(g,a).then(function (e) { 
+                res.send( JSON.stringify([e,g]) );        
+              });   
+            break;
+            case 'v':
+              Object.keys(o.body).forEach(e => {
+                Object.keys(o.body[e]).forEach(eb => {
+                  Object.keys(o.body[e][eb]).forEach(ec => {
+                    g.push({
+                      tabla:eb,
+                      api:e,
+                      id:ec,
+                      col:o.body[e][eb][ec]
+                    });
+                  });
+                });
+              });        
+              jmy.ver(g,a).then(function (e) {  
+                res.send( JSON.stringify(e) );      
+              });
+            break;
+            default:
+            break;
+          }       
+        break;
         default:
           break;
         
@@ -363,13 +396,71 @@ app.post('/administrador/:c/:p', jmy.sesion(jmy_connect),async (req,res)=>{
 
 app.get('/token', jmy.sesion(jmy_connect),async (req,res)=>{
   jmy.token([],req.accesos).then(function (r) {
-    console.log('token',r);
-    console.log('acceso',req.accesos);
+    console.log('token -->',r);
+    console.log('acceso -->',req.accesos);
+    console.log('api -->',req.accesos.api.json);
     res.status(403).send('Token on console ');
   });
 });
 
 
+
+
+
+app.get('/caja', jmy.sesion(jmy_connect), async (req, res) => {
+
+  let data=context(req);
+ data=context(req,{
+    css:[
+      {url:"//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"}
+    ],
+    js:[
+      {url:"//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"},
+    ]
+  });
+  data.head.title='Caja Dashboard';
+  data.out={ola:"ola k ace"};
+
+  console.log(req);
+  
+  res.render('caja_dashboard',data);
+
+});
+
+app.get('/caja/:p', jmy.sesion(jmy_connect), async (req, res) => {
+
+  let data=context(req);
+ data=context(req,{
+    css:[
+      {url:"//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"}
+    ],
+    js:[
+      {url:"//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"},
+      {url:data.head.cdn+"assets/js/jmy/jmy_administrador_usuarios.js"},
+    ]
+  });
+  
+
+  console.log(req);
+  switch (req.params.p) {
+    case 'caja':
+    
+    data.head.title='Caja';
+    res.render('caja',data);
+    break;
+    case 'pagos':
+      data.head.title='Pagos';
+      data.carga.js.push({url:data.head.cdn+"assets/js/coworking/caja_pagos.js"})
+      res.render('caja_pagos',data);
+    break;
+  
+    default:
+
+    break;
+  }  
+  
+
+});
 
 
 
@@ -409,13 +500,9 @@ app.get('/lineavista', jmy.sesion(jmy_connect), async (req, res) => {
   });
   data.head.title='Vista líena de tiempo';
   data.out={ola:"ola k ace"};
-
   console.log('req.accesos *********',req.accesos);
-  console.log('data *********',data);
-  
+  console.log('data *********',data);  
   console.log('PERMISOS ',req.accesos.pm.perfil.permisos);
-
-
   res.render('linea_de_tiempo',data);
 
 });
@@ -427,9 +514,6 @@ app.get('/lineavista', jmy.sesion(jmy_connect), async (req, res) => {
 app.get('/nosesion', jmy.sesion(jmy_connect), async (req, res) => {
   const a = req.accesos;
 
-
-
-  
 
   if(a.pm.vistaweb.permisos>2){
 
@@ -464,7 +548,6 @@ app.get('/nosesion', jmy.sesion(jmy_connect), async (req, res) => {
   res.send(JSON.stringify({error:"no tienes accesos a esta sección"}));
 }
 
-
 });
 
 
@@ -482,31 +565,6 @@ app.get('/', jmy.sesion(jmy_connect),async (req, res) => {
   }
 });
 
-
-app.get('/ver', async (req, res) => {
-  const ver = req.body;
-  try {
-    console.log(ver);
-    res.status(201).json(ver);
-  } catch(error) {
-    console.log('Error detecting sentiment or saving message', error.message);
-    res.sendStatus(500);
-  }
-});
-
-
-app.get('/coworking/caja', async (req, res) => {
-  const post = req.body;
-  let acceso = req.accesos
-  try {      
-    console.log('post',post);
-    let data=context(req);
-    res.render('caja',data);    
-  } catch(error) {
-    console.log('Error detecting sentiment or saving message', error.message);
-    res.sendStatus(500);
-  }
-});
 
 
 /*

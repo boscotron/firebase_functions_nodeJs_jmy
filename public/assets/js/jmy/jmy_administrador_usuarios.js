@@ -49,12 +49,14 @@ $(document).ready( function () {
         });
     });
     $('#card_ver_perfil').hide();
+    $('#card_editar_perfil').hide();
     $('#equipo_de_trabajo').hide();
     $('.loading_editor').hide();
     $('.loading_lista').hide();
     $('#ver_mi_perfil').on('click',function(){
         $('#card_nuevo_perfil').hide(20);
         $('#card_ver_perfil').show(30);
+        $('#card_editar_perfil').hide(20);
     });
     $('#tabla_usuarios').DataTable();
 
@@ -168,50 +170,29 @@ $(document).ready( function () {
             cache: false,
             processData: false,
             success: function(r){
-
                 const i = {
                     info:r.info.info || {},
-                    perfil:r.perfil || {},
+                    perfil:r.info.perfil || {},
                 };
-                console.log(r,'-----------',i); 	
-                let datos = { 
-                    nombre_empresa:i.perfil.nombre_empresa || '',
-                    usuario: i.info.email,
-                    email: i.info.email,
-                    nombre: i.perfil.nombre || i.info.nombre ,
-                    apellido:  i.perfil.apellido || i.info.apellido ,
-                    ciudad:  i.perfil.ciudad || i.info.ciudad ,
-                    pais:  i.perfil.pais || i.info.pais ,
-                    codigo_postal:  i.perfil.codigo_postal || i.info.codigo_postal ,
-                    aceca_de:  i.perfil.aceca_de || i.info.aceca_de ,
-                };
-                console.log('DATOS',datos);
-                
-                $("#nombre_empresa").val(datos.nombre_empresa);
-                $("#usuario").val(datos.usuario);
-                $("#email").val(datos.email);
-                $("#nombre").val(datos.nombre);
-                $("#apellido").val(datos.apellido);
-                $("#ciudad").val(datos.ciudad);
-                $("#pais").val(datos.pais);
-                $("#codigo_postal").val(datos.codigo_postal);
-                $("#aceca_de").val(datos.aceca_de);
-                
+                let d = {};
+                $(".formulario-usuario").each(function(){
+                    const ig = $(this).attr("id");
+                    d[ig]=i.perfil[ig] || i.info[ig];
+                    $("#"+ig).val(d[ig] || "");
+                });
                 $('.modulos_def').data('def','0');
                 $(".modulos_def option").attr('selected',false);
                 Object.keys(r.modulos).forEach(e => {
                     const d = r.modulos[e];
                     $("#sele_"+e).data('def',d.permisos);
-                   // console.log(" <<< #sele_"+e,$("#sele_"+e).data('def'),d.permisos,r);
-                    
                     $("#sele_"+e+" option[value="+d.permisos+"]").attr('selected','selected');       
                 }); 
-               // $('.tab_lista').collapse('hide');
                 $('#collapseOne').collapse('hide');
                 $('#collapseTwo').collapse('show');
                 $('#collapseThree').collapse('show');  
-                $('#card_nuevo_perfil').hide(40);
-                $('#card_ver_perfil').show(80);
+                $('#card_nuevo_perfil').hide(20);
+                $('#card_ver_perfil').hide(20);                
+                $('#card_editar_perfil').show(40);
                 $('.loading_editor').hide(30);
                 $('.modulos_def').prop( "disabled", false );
         },error: function(result) {
