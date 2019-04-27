@@ -387,8 +387,6 @@ app.post('/administrador/:c/:p', jmy.sesion(jmy_connect),async (req,res)=>{
     console.log('Error Administrador', e);
     res.status(500).send();
   }
-  
-
 });
 
 
@@ -410,7 +408,7 @@ app.get('/token', jmy.sesion(jmy_connect),async (req,res)=>{
 app.get('/caja', jmy.sesion(jmy_connect), async (req, res) => {
 
   let data=context(req);
- data=context(req,{
+  data=context(req,{
     css:[
       {url:"//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"}
     ],
@@ -420,9 +418,7 @@ app.get('/caja', jmy.sesion(jmy_connect), async (req, res) => {
   });
   data.head.title='Caja Dashboard';
   data.out={ola:"ola k ace"};
-
   console.log(req);
-  
   res.render('caja_dashboard',data);
 
 });
@@ -430,13 +426,12 @@ app.get('/caja', jmy.sesion(jmy_connect), async (req, res) => {
 app.get('/caja/:p', jmy.sesion(jmy_connect), async (req, res) => {
 
   let data=context(req);
- data=context(req,{
+  data=context(req,{
     css:[
       {url:"//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"}
     ],
     js:[
       {url:"//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"},
-      {url:data.head.cdn+"assets/js/jmy/jmy_administrador_usuarios.js"},
     ]
   });
   
@@ -463,6 +458,95 @@ app.get('/caja/:p', jmy.sesion(jmy_connect), async (req, res) => {
 });
 
 
+
+app.get('/smp/captura', jmy.sesion(jmy_connect), async (req, res) => {
+
+  let data=context(req);
+  data=context(req,{
+    css:[
+      {url:"//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"}
+    ],
+    js:[
+      {url:"//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"},
+    ]
+  });
+  data.head.title='Caja Dashboard';
+  data.out={ola:"ola k ace"};
+  console.log(req);
+  res.render('smp_captura',data);
+
+});
+
+app.get('/smp/gestion/:p', jmy.sesion(jmy_connect), async (req, res) => {
+
+  let data=context(req);
+  data=context(req,{
+    css:[
+      {url:"//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"}
+    ],
+    js:[
+      {url:"//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"},
+    ]
+  });
+  
+
+  console.log(req);
+  switch (req.params.p) {
+    case 'avances':
+    
+      data.head.title='Gestíon Avances';
+      res.render('smp_gestion_avances',data);
+    break;
+    case 'captura':
+      data.head.title='Gestíon captura';
+      res.render('smp_gestion_captura',data);
+    break;
+    case 'resumen':
+      data.head.title='Gestíon resumen';res.render('smp_gestion_resumen',data);
+    break;
+  
+    default:
+
+    break;
+  }  
+  
+});
+
+app.get('/smp/catalogo/:p', jmy.sesion(jmy_connect), async (req, res) => {
+
+  let data=context(req);
+  data=context(req,{
+    css:[
+      {url:"//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"}
+    ],
+    js:[
+      {url:"//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"},
+    ]
+  });
+  
+
+  console.log(req);
+  switch (req.params.p) {
+    case 'objetivos':
+    
+      data.head.title='Gestíon objetivos';
+      res.render('smp_catalogo_objetivos',data);
+    break;
+    case 'programas':
+      data.head.title='Catálogo programas';
+      res.render('smp_catalogo_programas',data);
+    break;
+    case 'objetivos':
+      data.head.title='Gestíon objetivos';
+      res.render('smp_catalogo_objetivos',data);
+    break;
+  
+    default:
+
+    break;
+  }  
+
+});
 
 app.get('/ola', jmy.sesion(jmy_connect), async (req, res) => {
 
