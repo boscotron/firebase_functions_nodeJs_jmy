@@ -464,14 +464,23 @@ app.get('/smp/captura', jmy.sesion(jmy_connect), async (req, res) => {
   let data=context(req);
   data=context(req,{
     css:[
-      {url:"//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"}
+      {url:"//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"},
+      {url:"//cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css"},
+      {url:"//raw.githack.com/ttskch/select2-bootstrap4-theme/master/dist/select2-bootstrap4.min.css"}
     ],
     js:[
       {url:"//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"},
+      {url:"//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"},
+      {url:"//cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"},
+      {url:data.head.cdn+"assets/js/smp/captura.js?d="+Date.now()},
     ]
   });
-  data.head.title='Caja Dashboard';
-  data.out={ola:"ola k ace"};
+
+  
+  data.head.title='Alta de acción (primera vez)';
+
+
+
   console.log(req);
   res.render('smp_captura',data);
 
@@ -548,91 +557,6 @@ app.get('/smp/catalogo/:p', jmy.sesion(jmy_connect), async (req, res) => {
 
 });
 
-app.get('/ola', jmy.sesion(jmy_connect), async (req, res) => {
-
-  let data=context(req);
- data=context(req,{
-    css:[
-      {url:"//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"}
-    ],
-    js:[
-      {url:"//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"},
-      {url:data.head.cdn+"assets/js/jmy/jmy_administrador_usuarios.js"},
-    ]
-  });
-  data.head.title='Hola';
-  data.out={ola:"ola k ace"};
-
-  console.log(req);
-  
-  res.render('ola',data);
-
-});
-
-
-
-app.get('/lineavista', jmy.sesion(jmy_connect), async (req, res) => {
-
-  let data=context(req);
- data=context(req,{
-    css:[
-     
-    ],
-    js:[
-     
-    ]
-  });
-  data.head.title='Vista líena de tiempo';
-  data.out={ola:"ola k ace"};
-  console.log('req.accesos *********',req.accesos);
-  console.log('data *********',data);  
-  console.log('PERMISOS ',req.accesos.pm.perfil.permisos);
-  res.render('linea_de_tiempo',data);
-
-});
-
-
-
-
-
-app.get('/nosesion', jmy.sesion(jmy_connect), async (req, res) => {
-  const a = req.accesos;
-
-
-  if(a.pm.vistaweb.permisos>2){
-
-  jmy.guardar([{
-    tabla:"plantillas_web",
-    api:"vistaweb",
-    //id:"BSK",
-    guardar:{titulo_web:"Ola k hace",descripcion_div:"hola!"}
-
-  }],a).then(function (e) {
-      context.title="prueba de guardado";
-    let out = [];
-    for(let p of e){
-      p=p.jmy_guardar;
-      
-      console.log("guardar",p, "[[ EL ID ES: "+p.out.cabecera.id+"]]");  
-    }
-
-    jmy.ver([{
-      tabla:"plantillas_web",
-      api:"vistaweb",
-    //  col:["campo3"]
-    }],a).then(function (e) {  
-      for(let p of e){
-        p=p.jmy_ver;
-        console.log("ver",p.ot, "[[ EL ID ES: "+p.id_f+"]]");  
-      }
-    });
-
-  });
-}else{
-  res.send(JSON.stringify({error:"no tienes accesos a esta sección"}));
-}
-
-});
 
 
 app.get('/', jmy.sesion(jmy_connect),async (req, res) => {
@@ -654,74 +578,6 @@ app.get('/', jmy.sesion(jmy_connect),async (req, res) => {
 /*
 app.use('/', routes);
 app.use('/users', users);
-*/
-/*
-  
-servidor:"http://test-env.fm2wgiif5j.us-east-2.elasticbeanstalk.com:3000",
-*/
-
-
-
-  /*
-
-  jmy.guardar([{
-    tabla:"tabla_extra",
-    api:"APIKEY",
-    id:"BSK",
-    guardar:{"campo1":"Ola k hace","campo2":"hola!","campo3":" :D "}
-  }],acceso).then(function (e) {
-    for(let p of e){
-      p=p.jmy_guardar;
-      console.log("guardar",p, "[[ EL ID ES: "+p.out.cabecera.id+"]]");  
-    }
-
-    jmy.ver([{
-      tabla:"tabla_extra",
-      api:"APIKEY",
-      col:["campo3"]
-    }],acceso).then(function (e) {  
-      for(let p of e){
-        p=p.jmy_ver;
-        console.log("ver",p.ot, "[[ EL ID ES: "+p.id_f+"]]");  
-      }
-    });
-
-  });
-*/
-
-
-/*
-  jmy.nueva_empresa([{
-    eid: "MARCELO_EMPRESA",
-    estado: "2",
-    datos:{
-      "tablas":[
-        {
-          "nombre": "registro_timeline",
-          "entrada": "1",
-          "salida": "0"
-        },
-        {
-          "nombre": "tabla_extra",
-          "entrada": "1",
-          "salida": "0"
-        },
-        {
-          "nombre": "registro_de_pagos",
-          "entrada": "1",
-          "salida": "0"
-        }     
-      ]}
-  }],acceso).then(function(res){
-    console.log(
-      res[0].jmy_emp.out.datos,
-      res[0].jmy_emp.out.datos.datos.tablas
-      );  
-  });
-  
-  jmy.db([{eid:"MARCELO_EMPRESA"}],acceso).then(function (e) {
-    console.log("DB",e);
-  });
 */
 
 
