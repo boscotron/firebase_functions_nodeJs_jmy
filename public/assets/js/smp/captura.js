@@ -97,5 +97,5 @@ $(document).ready(function(){
 function onFinishWizard(){
     //here you can do something, sent the form to server via ajax and show a success message with swal
 
-    swal("Good job!", "You clicked the finish button!", "success");
+    swal("!Alta guardada!", "Para ver más información ve a lista de acciones", "success");
 }
